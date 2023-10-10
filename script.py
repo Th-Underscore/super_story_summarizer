@@ -130,20 +130,25 @@ def input_modifier(
     return prompt
 """
 
-print("Import test.py")
+print("Importing tree_handling.py...")
 from extensions.super_story_summarizer.utils.tree_handling import get_custom_prompts
 print("Imported!")
 
 
 characters = {
     "main=type_of_character": {
-        "character": [["John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington"]]
+        "character": [[
+            { "name": "John Mush", }, 
+            { "name": "Paul Mush" },
+            { "name": "Amy Harrison" },
+            { "name": "Angelina Washington" }
+        ]]
     },
     "secondary=type_of_character": {
-        "character": [["Sonya Lopez"]]
+        "character": [[{ "name": "Sonya Lopez" }]]
     },
     "side=type_of_character": {
-        "character": [["Harry Washington"]]
+        "character": [[{ "name": "Harry Washington" }]]
     }
 }
 
