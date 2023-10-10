@@ -19,13 +19,6 @@ from extensions.long_term_memory.utils.timestamp_parsing import (
     get_time_difference_message,
 )
 
-_JSON_PATH = "extensions/super_story_summarizer/utils/example.json"
-with open(_JSON_PATH, "rt") as handle:
-    _HISTORY = json.load(handle)
-
-print("============ TEST HISTORY ============")
-print(_HISTORY)
-
 # === Internal constants (don't change these without good reason) ===
 _CONFIG_PATH = "extensions/super_story_summarizer/sss_config.json"
 _MIN_ROWS_TILL_RESPONSE = 5
@@ -131,27 +124,25 @@ def input_modifier(
 """
 
 print("Importing tree_handling.py...")
-from extensions.super_story_summarizer.utils.tree_handling import get_custom_prompts
-print("Imported!")
-
+from extensions.super_story_summarizer.utils.tree_handling import *
+print("Finished importing tree_handling.py!")
 
 characters = {
     "main=type_of_character": {
-        "character": [[
-            { "name": "John Mush", }, 
-            { "name": "Paul Mush" },
-            { "name": "Amy Harrison" },
-            { "name": "Angelina Washington" }
-        ]]
+        "character": [{ "overrides": {}, "names": [ "John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington" ] }]
     },
     "secondary=type_of_character": {
-        "character": [[{ "name": "Sonya Lopez" }]]
+        "character": [{ "overrides": {}, "names": [ "Sonya Lopez" ] }]
     },
     "side=type_of_character": {
-        "character": [[{ "name": "Harry Washington" }]]
+        "character": [{ "overrides": {}, "names": [ "Harry Washington" ] }]
     }
 }
 
 script = get_custom_prompts(characters)
 for line in script:
     print(line)
+
+print("Importing history_parser.py...")
+from extensions.super_story_summarizer.utils.history_parser import *
+print("Finished importing history_parser.py!")
