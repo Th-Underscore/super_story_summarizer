@@ -2,7 +2,7 @@
 
 **This README will be properly formatted in the future, I'm too lazy to do it now.**
 
-## Main ideas
+## Main Ideas
 
 - Map details of specific subjects (i.e. each character has own list of details)
 - Add current event information (what is currently happening)
@@ -52,7 +52,7 @@
   - Break -> Subject = More sequential
   - Subject -> Break = More plot/character-based
 
-## UI ideas
+## UI Ideas
 
 - JSON branch order
   - Configurable prompts and branches
