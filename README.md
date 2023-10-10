@@ -36,11 +36,13 @@ What this project has in store for text-generation-webui!
 
       *%%% History*
 
-      *(join whole summary)*
+      *(get current summary)*
 
       *%%% Latest event*
 
       *(get last elements in history)*
+
+      *(replace summary)*
 - Summary weight [float] **LOW USAGE : +CONTEXT**
   - Begin summarization/intensify summarization depending on:
     - current amount of data stored
