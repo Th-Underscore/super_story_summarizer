@@ -5,6 +5,8 @@
 # Current features
 - Nothing useful 🤣
 
+# Planned features
+
 ## Main Ideas
 
 - Map details of specific subjects (i.e. each character has own list of details)
