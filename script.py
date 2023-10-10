@@ -146,3 +146,8 @@ for line in script:
 print("Importing history_parser.py...")
 from extensions.super_story_summarizer.utils.history_parser import *
 print("Finished importing history_parser.py!")
+
+print("Reading history...")
+history = read_history()
+print(history)
+print("Finished reading history!")
