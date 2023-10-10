@@ -2,6 +2,9 @@
 
 **This README will be properly formatted in the future, I'm too lazy to do it now.**
 
+# Current features
+- Nothing useful 🤣
+
 ## Main Ideas
 
 - Map details of specific subjects (i.e. each character has own list of details)
@@ -11,12 +14,6 @@
   
 ## Master Settings
 
-- Summary weight [float] **LOW USAGE : +CONTEXT**
-  - Begin summarization/intensify summarization depending on:
-    - current amount of data stored
-    - total \# of messages
-- Include timestamp [bool] **LOW USAGE : +CONTEXT**
-- Summary break (how summary should be split, i.e. per day or per scene) [string] **CONFIG : -CONTEXT**
 - Active summarization (summarize each new line and push it to array) vs total summarization (get full story and summarize)
   - Active prompt: **LOW-MEDIUM USAGE : -CONTEXT ++DATA**
 
@@ -41,7 +38,12 @@
       *%%% Latest event*
 
       *(get last elements in history)*
-
+- Summary weight [float] **LOW USAGE : +CONTEXT**
+  - Begin summarization/intensify summarization depending on:
+    - current amount of data stored
+    - total \# of messages
+- Include timestamp [bool] **LOW USAGE : +CONTEXT**
+- Summary break (how summary should be split, i.e. per day or per scene) [string] **CONFIG : -CONTEXT**
 - Memory loss **LOW USAGE : --CONTEXT -DATA**
   - Keep all details of past summaries vs summarize further and further
   - Re-summarize based on time, sequence, or both?
