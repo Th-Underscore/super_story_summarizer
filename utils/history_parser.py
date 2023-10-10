@@ -18,6 +18,31 @@ print("============ TEST HISTORY ============")
 print(_HISTORY)
 
 def read_history():
+    subjects = {}
     with open(_JSON_PATH, "rt") as handle:
         _HISTORY = json.load(handle)
-    
+    # Get current subjects separately from other details
+    recursive_get_subjects(subjects, _HISTORY["current"])
+
+    string = ""
+    keys = subjects.keys()
+    print(f"keys {keys}")
+    for key in keys:
+        string += '\n'.join(subjects[key]) + "\n\n"
+        print("added \\n\\n")
+
+    return string
+
+def recursive_get_subjects(result, obj):
+    print(f"obj {obj}")
+    if isinstance(obj, dict):
+        print("is dict")
+        for value in obj.values():
+            print(f"value {value}")
+            if isinstance(value, list):
+                print(f"is list | old result {result}")
+                result.update(obj)
+                print(f"new result {result}")
+            else:
+                print("is not list")
+                recursive_get_subjects(result, value)
