@@ -2,19 +2,20 @@
 
 **This README will be properly formatted in the future, I'm too lazy to do it now.**
 
-# Current features
+## Current features
 - Nothing useful 🤣
 
-# Planned features
+## Planned features
+What this project has in store for text-generation-webui!
 
-## Main Ideas
+### Main Ideas
 
 - Map details of specific subjects (i.e. each character has own list of details)
 - Add current event information (what is currently happening)
 - Add extreme short-term information (what is CURRENTLY happening)
 - Summarize context (i.e. style of narration, 2nd person vs 3rd person) - Save summary of context in specific branch of JSON file for future use
   
-## Master Settings
+### Master Settings
 
 - Active summarization (summarize each new line and push it to array) vs total summarization (get full story and summarize)
   - Active prompt: **LOW-MEDIUM USAGE : -CONTEXT ++DATA**
@@ -56,7 +57,7 @@
   - Break -> Subject = More sequential
   - Subject -> Break = More plot/character-based
 
-## UI Ideas
+### UI Ideas
 
 - JSON branch order
   - Configurable prompts and branches
