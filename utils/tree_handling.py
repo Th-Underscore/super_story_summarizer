@@ -28,16 +28,11 @@ def recursive_get_keys(obj, result, keys={}):
             # If splitter doesn't exist (i.e. "type") and value is a list
             if (len(split_obj_key) == 1) & isinstance(value, list):
                 for sbj in value: # i.e. main=type_of_character.character[0] with 2 recursions
-                    sbj_list = []
-                    for sbj_value in sbj: # i.e. main=type_of_character.character[0][0] with 2 recursions
-                        sbj_list.append(sbj_value["name"]) # Rather do this than put an if statement in the loop...
-                        # Check if subject contains var override.
-                        for sbj_key in sbj_value.keys(): # i.e. main=type_of_character.character[0][0].character_override with 2 recursions
-                            override_key = sbj_key.split("_override")
-                            # If override string exists
-                            if (len(override_key) == 2):
-                                keys[override_key[0]] = sbj_value[sbj_key]
-                    keys[obj_key] = sbj_list
+                    # Get override strings.
+                    overrides = sbj["overrides"]
+                    for override_key in overrides.keys(): # i.e. main=type_of_character.character[0].overrides.character with 2 recursions
+                        keys[override_key] = overrides[override_key]
+                    keys[obj_key] = sbj["names"]
                     result.append(copy.deepcopy(keys))
             else:
                 # Let key_value be the left side of splitter ("="), key_name be the right side.
@@ -66,33 +61,34 @@ subjects = {
         "$prompt=$prompt": "",
         "main=type_of_character": {
             "character": [
-                [
-                    { "name": "char1" },
-                    { "name": "char2", "type_of_character_override": "better_than_main" }
-                ],
-                [{ "name": "char0", "$prompt_override": "Hello, I am [character], a [type_of_character] character." }]
+                {
+                    "overrides": {},
+                    "names": [ "char1", "char2" ],
+                },
+                {
+                    "overrides": { "$prompt": "Hello, I am {character}, a {type_of_character} character." },
+                    "names": [ "char0" ]
+                }
             ]
         },
         "secondary=type_of_character": {
-            "character": [[
-                { "name": "char3" },
-                { "name": "char4" },
-                { "name": "char5" },
-                { "name": "char6" }
-            ]]
+            "character": [{
+                "overrides": {},
+                "names": [ "char3", "char4", "char5", "char6" ]
+            }]
         },
         "extra=type_of_character": {
             "sub=extra_list": {
-                "character": [[
-                    { "name": "char7" },
-                    { "name": "char8" }
-                ]]
+                "character": [{
+                    "overrides": {},
+                    "names": [ "char7", "char8" ]
+                }]
             },
             "sub2=extra_list": {
-                "character": [[
-                    { "name": "char9" },
-                    { "name": "char10" }
-                ]]
+                "character": [{
+                    "overrides": {},
+                    "names": [ "char9", "char10" ]
+                }]
             }
         }
     }
