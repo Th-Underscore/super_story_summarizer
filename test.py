@@ -1,40 +1,28 @@
-def print_tree(tree, indent=''):
-    length = len(tree)
-    for index, (key, value) in enumerate(tree.items()):
-        if isinstance(value, dict):
-            if index == length - 1:
-                print(f'{indent}└── {key}')
-                print_tree(value, indent + '    ')
-            else:
-                print(f'{indent}├── {key}')
-                print_tree(value, indent + '│   ')
+import gradio as gr
+
+def update_tree(*args):
+    tree = {}
+    for i, arg in enumerate(args):
+        if i % 2 == 0:
+            last_arg = arg
         else:
-            if index == length - 1:
-                print(f'{indent}└── {key}: {value}')
-            else:
-                print(f'{indent}├── {key}: {value}')
+            tree.update({ last_arg: arg })
+    # Update the tree with the new key-value pairs
+    # You can implement your own logic here
 
-tree = {
-    'root': {
-        'node1': {
-            'leaf1': '1',
-            'leaf2': '2'
-        },
-        'node2': {
-            'leaf3': '3',
-            'leaf4': '4'
-        }
-    },
-    'root2': {
-        'node1': {
-            'leaf1': '1',
-            'leaf2': '2'
-        },
-        'node2': {
-            'leaf3': '3',
-            'leaf4': '4'
-        }
-    }
-}
+    # Print the updated tree for demonstration purposes
+    print(f"Updated Tree: {tree}")
 
-print_tree(tree)
+def tree_editor(tree: dict, btn: gr.Button):
+    # Display the current tree
+    print(f"Current Tree: {tree}")
+
+    # Create editable text boxes for each key-value pair
+    inputs = []
+    for key, value in tree.items():
+        key_input = gr.Textbox(label=f"Key: {key}", default=key)
+        value_input = gr.Textbox(label=f"Value: {value}", default=value)
+        inputs.extend([key_input, value_input])
+
+    # Update the tree when any of the text boxes are edited
+    btn.click(update_tree, inputs=inputs, outputs=None)

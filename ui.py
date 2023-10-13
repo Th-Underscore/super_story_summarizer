@@ -48,6 +48,8 @@ def ui():
     #     with gr.Column(scale=2, min_width=600):
     #         btn = gr.Button("Go")
 
+from extensions.super_story_summarizer.test import *
+
 def generate_tree(data: dict):
     with gr.Tab('Subjects'):
         tree: list[list[str]] = []
@@ -55,11 +57,31 @@ def generate_tree(data: dict):
             _HISTORY = json.load(handle)
         with gr.Row():
             with gr.Column(scale=0, min_width=600, variant="compact"):
+                foo_input = gr.Textbox(label="Enter foo", elem_classes=['textbox', 'add_scrollbar'], block_id=501)
+                bar_input = gr.Textbox(label="Enter bar")
+                baz_input = gr.Textbox(label="Enter baz")
+                inputs = [
+                    gr.HTML(f'<div style="margin-left: 0px;">{foo_input}</div>')#,
+                    #gr.HTML(f'<div style="margin-left: 20px;">{bar_input}</div>'),
+                    #gr.HTML(f'<div style="margin-left: 40px;">{baz_input}</div>')
+                ]
+                output = gr.Textbox()
+                btn = gr.Button("Test")
                 # Get current subjects separately from other branches
                 print("Getting tree...")
-                recursive_get_tree(_HISTORY["current"])
+                # Initial tree
+                tree = {
+                    "Key 1": "Value 1",
+                    "Key 2": "Value 2",
+                    "Key 3": "Value 3"
+                }
+
+                # Launch the tree editor
+                tree_editor(tree, btn)
+                # btn.click(create_tree_view, [foo_input, bar_input, baz_input], output)
                 print(tree)
                 print("Finished getting tree!")
+                
                 # for node in tree:
                 #     with gr.Row():
                 #         for branch in node[:-1]:
