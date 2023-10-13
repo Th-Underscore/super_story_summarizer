@@ -12,11 +12,14 @@ from modules.html_generator import fix_newlines
 
 def get_readable_list(seq: list) -> str:
     """Return a grammatically correct human readable string (with an Oxford comma).
-    Ref: https://stackoverflow.com/a/53981846/"""
-    seq = [str(s) for s in seq]
-    if len(seq) < 3:
-        return ' and '.join(seq)
-    return ', '.join(seq[:-1]) + ', and ' + seq[-1]
+
+    Args:
+        seq (list) -> the list to stringify.
+
+    Returns:
+        str -> the list as a readable string.
+    """
+    return ", ".join(seq[:-1]) + ", and " + seq[-1] if len(seq) > 1 else seq[0]
 
 test_subjects = {
     "main": [ { "name": "", "properties": { 1, 2, 3, 4, 5 } }, {} ],
@@ -38,7 +41,7 @@ def recursive_get_keys(obj: dict, result: dict, properties: list={}):
         if isinstance(obj_value, list):
             for sbj in obj_value: # i.e. main.character[0] with 2 recursions
                 # Create copy of current properties for each subject.
-                sbj_properties = copy.deepcopy(properties)
+                sbj_properties = copy.copy(properties)
                 # Get generation key of subject, default to last property.
                 generation_key = sbj.get("generation_key", [*sbj_properties.values()][-1])
                 # Get all subject properties.
@@ -51,17 +54,14 @@ def recursive_get_keys(obj: dict, result: dict, properties: list={}):
                         sbj_properties[sbj_key] = sbj_value
                 print(f"generation key {generation_key} | name {name}")
                 # Add subject name and properties to result using generation key.
-                if generation_key in result:
-                    result[generation_key].append({ "name": name, "properties": sbj_properties })
-                else:
-                    result.update({ generation_key: [{ "name": name, "properties": sbj_properties }] })
+                result.setdefault(generation_key, []).append({"name": name, "properties": sbj_properties})
         elif isinstance(obj_value, str):
             properties[obj_key] = obj_value
         elif isinstance(obj_value, dict):
             # Loop recursively if value is a dictionary.
-            recursive_get_keys(obj_value, result, copy.deepcopy(properties))
+            recursive_get_keys(obj_value, result, copy.copy(properties))
         
-def parse_prompts(string: str, data: list):
+def parse_prompts(data: list):
     """Replace placeholders (i.e. "[key]") in string with formatted list.
 
     Args:
@@ -78,17 +78,13 @@ def parse_prompts(string: str, data: list):
         # Total dictionary of prompts for current generation
         generation_prompt = {}
         for sbj in generation:
-            print(f"sbj_name {sbj['name']}")
             sbj_properties = sbj["properties"]
             sbj_prompt = sbj_properties["prompt"]
             for (key, property) in sbj_properties.items(): # i.e. type_of_character
                 # Find placeholders in string and replace with property value.
                 sbj_prompt = sbj_prompt.replace("{" + key + "}", property)
             # Add subject name to list with prompt as key.
-            if sbj_prompt in generation_prompt:
-                generation_prompt[sbj_prompt].append(sbj["name"])
-            else:
-                generation_prompt.update({ sbj_prompt: [ sbj["name"] ] })
+            generation_prompt.setdefault(sbj_prompt, []).append(sbj["name"])
         # Loop all collected prompts.
         generation_prompts = ""
         for (prompt, names) in generation_prompt.items():
@@ -158,4 +154,4 @@ def get_custom_prompts(tree):
     recursive_get_keys(tree, result)
 
     string = "{character} is/are [a] {type_of_character} character(s). Please write a summary on {character}'s personality, relations, and overall actions in this story."
-    return parse_prompts(string, result.values())
+    return parse_prompts(result.values())

@@ -187,10 +187,9 @@ for line in script:
 # print(history)
 # print("Finished reading history!")
 
-from extensions.super_story_summarizer.ui import *
-
 global params
 params = {
     "display_name": "Summarizer",
     "is_tab": True,
 }
+from extensions.super_story_summarizer.ui import *

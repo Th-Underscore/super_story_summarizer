@@ -27,7 +27,7 @@ def read_history():
     with open(_JSON_PATH, "rt") as handle:
         _HISTORY = json.load(handle)
     # Get current subjects separately from other branches
-    recursive_get_subjects(subjects, _HISTORY["current"])
+    recursive_get_subjects(_HISTORY["current"], subjects)
 
     string = ""
     keys = subjects.keys()
@@ -38,23 +38,44 @@ def read_history():
 
     return string
 
-def recursive_get_subjects(result: dict, obj: dict):
-    """Retrieve all subjects in a parsed history dictionary.
+def recursive_get_subjects(obj: dict, result: dict):
+    """Retrieve all subject histories in a parsed history dictionary.
 
     Args:
-        result (dict) -> the result dictionary reference (is modified recursively)
-
-        obj (dict) -> the parsed JSON history dictionary
+        obj (dict) -> the parsed JSON history dictionary.\n
+        result (dict) -> the result dictionary reference (modified recursively).
     """
-    print(f"obj {obj}")
     if isinstance(obj, dict):
-        print("is dict")
-        for value in obj.values():
-            print(f"value {value}")
+        for (key, value) in obj.items():
             if isinstance(value, list):
-                print(f"is list | old result {result}")
                 result.update(obj)
-                print(f"new result {result}")
             else:
-                print("is not list")
-                recursive_get_subjects(result, value)
+                recursive_get_subjects(value, result)
+
+def recursive_get_tree(obj: dict, branch: str=""):
+    """Format all subjects in a parsed history dictionary as a tree.
+
+    Args:
+        obj (dict) -> the parsed JSON history dictionary.\n
+        result (dict) -> the result dictionary reference (modified recursively).\n.
+        branch (str, optional) -> recursive variable, leave empty.
+    """
+    if isinstance(obj, dict):
+        items = obj.items()
+        length = len(items)
+        print(f"length {length} | range {range(0, length-1)}")
+        i = 0
+        for i, (key, value) in enumerate(items):
+            new_branch = [ *branch, key ]
+            print(f"i {i}")
+            with gr.Row():
+                if i != length:
+                    print(f"i {i} != length {length}")
+                    gr.Markdown("├")
+                else:
+                    print(f"i {i} == length {length}")
+                    gr.Markdown("└")
+            if isinstance(value, dict):
+                recursive_get_tree(value, new_branch)
+            else:
+                ''
