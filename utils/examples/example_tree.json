@@ -1,0 +1,38 @@
+{
+    "characters=type_of_subject": {
+        "$prompt=$prompt": "",
+        "main=type_of_character": {
+            "character": [
+                {
+                    "overrides": {},
+                    "values": [ { "name": "char1", "generation_key": "main" } ],
+                    "names": [ "char1", "char2" ]
+                },
+                {
+                    "overrides": { "$prompt": "Hello, I am {character}, a {type_of_character} character." },
+                    "names": [ "char0" ]
+                }
+            ]
+        },
+        "secondary=type_of_character": {
+            "character": [{
+                "overrides": {},
+                "names": [ "char3", "char4", "char5", "char6" ]
+            }]
+        },
+        "extra=type_of_character": {
+            "sub=extra_list": {
+                "character": [{
+                    "overrides": {},
+                    "names": [ "char7", "char8" ]
+                }]
+            },
+            "sub2=extra_list": {
+                "character": [{
+                    "overrides": {},
+                    "names": [ "char9", "char10" ]
+                }]
+            }
+        }
+    }
+}

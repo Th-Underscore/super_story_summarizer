@@ -1,7 +1,8 @@
-**post_apocalyptic**: Fully written by yours truly
-**space_adventure**: Forefront+GPT-3.5
-**mystery_thriller**: Forefront+GPT-3.5
-**historical_fantasy**: Forefront+GPT-3.5
-**modern_vanilla**: Forefront+GPT-3.5
-**fantasy_quest**: Forefront+GPT-3.5
-**historical_fiction**: Forefront+GPT-3.5
+fantasy_quest: Forefront+GPT-3.5
+format: TheRealUnderscore
+historical_fantasy: Forefront+GPT-3.5
+historical_fiction: Forefront+GPT-3.5
+modern_vanilla: Forefront+GPT-3.5
+mystery_thriller: Forefront+GPT-3.5
+post_apocalyptic: Fully written by yours truly
+space_adventure: Forefront+GPT-3.5

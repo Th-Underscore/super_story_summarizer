@@ -18,10 +18,15 @@ print("============ TEST HISTORY ============")
 print(_HISTORY)
 
 def read_history():
+    """Stringify Super Story Summarizer subject list.
+    
+    Returns:
+        str: Each subject history 
+    """
     subjects = {}
     with open(_JSON_PATH, "rt") as handle:
         _HISTORY = json.load(handle)
-    # Get current subjects separately from other details
+    # Get current subjects separately from other branches
     recursive_get_subjects(subjects, _HISTORY["current"])
 
     string = ""
@@ -33,7 +38,14 @@ def read_history():
 
     return string
 
-def recursive_get_subjects(result, obj):
+def recursive_get_subjects(result: dict, obj: dict):
+    """Retrieve all subjects in a parsed history dictionary.
+
+    Args:
+        result (dict) -> the result dictionary reference (is modified recursively)
+
+        obj (dict) -> the parsed JSON history dictionary
+    """
     print(f"obj {obj}")
     if isinstance(obj, dict):
         print("is dict")

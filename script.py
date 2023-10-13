@@ -13,12 +13,6 @@ from modules.chat import generate_chat_prompt
 from modules.text_generation import generate_reply
 from modules.html_generator import fix_newlines
 
-from extensions.long_term_memory.core.memory_database import LtmDatabase
-from extensions.long_term_memory.utils.chat_parsing import clean_character_message
-from extensions.long_term_memory.utils.timestamp_parsing import (
-    get_time_difference_message,
-)
-
 # === Internal constants (don't change these without good reason) ===
 _CONFIG_PATH = "extensions/super_story_summarizer/sss_config.json"
 _MIN_ROWS_TILL_RESPONSE = 5
@@ -127,27 +121,76 @@ print("Importing tree_handling.py...")
 from extensions.super_story_summarizer.utils.tree_handling import *
 print("Finished importing tree_handling.py!")
 
-characters = {
-    "main=type_of_character": {
-        "character": [{ "overrides": {}, "names": [ "John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington" ] }]
-    },
-    "secondary=type_of_character": {
-        "character": [{ "overrides": {}, "names": [ "Sonya Lopez" ] }]
-    },
-    "side=type_of_character": {
-        "character": [{ "overrides": {}, "names": [ "Harry Washington" ] }]
+example_summary_config = {
+    "characters": {
+        "type_of_subject": "characters",
+        "prompt": "This is an example. Type: {type_of_character}, name: {name}, extra list: {extra_list}",
+        "main": {
+            "type_of_character": "main",
+            "values": [
+                { "name": "char1" },
+                { "name": "char2" },
+                { "name": "char0", "prompt": "Hello, I am {name}, a {type_of_character} character.", "generation_key": "gen1" }
+            ]
+        },
+        "secondary": {
+            "type_of_character": "secondary",
+            "values": [
+                { "name": "char3", "generation_key": "gen2" },
+                { "name": "char4", "generation_key": "gen1" },
+                { "name": "char5" },
+                { "name": "char6" },
+            ]
+        },
+        "extra": {
+            "type_of_character": "extra",
+            "sub": {
+                "extra_list": "sub",
+                "values": [
+                    { "name": "char7" },
+                    { "name": "char8" }
+                ]
+            },
+            "sub2": {
+                "extra_list": "sub2",
+                "values": [
+                    { "name": "char9", "generation_key": "gen2" },
+                    { "name": "char10" }
+                ]
+            }
+        }
     }
 }
 
-script = get_custom_prompts(characters)
+# example_summary_config = {
+#     "main=type_of_character": {
+#         "character": [{ "overrides": {}, "names": [ "John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington" ] }]
+#     },
+#     "secondary=type_of_character": {
+#         "character": [{ "overrides": {}, "names": [ "Sonya Lopez" ] }]
+#     },
+#     "side=type_of_character": {
+#         "character": [{ "overrides": {}, "names": [ "Harry Washington" ] }]
+#     }
+# }
+
+script = get_custom_prompts(example_summary_config)
 for line in script:
     print(line)
 
-print("Importing history_parser.py...")
-from extensions.super_story_summarizer.utils.history_parser import *
-print("Finished importing history_parser.py!")
+# print("Importing history_parser.py...")
+# from extensions.super_story_summarizer.utils.history_parser import *
+# print("Finished importing history_parser.py!")
 
-print("Reading history...")
-history = read_history()
-print(history)
-print("Finished reading history!")
+# print("Reading history...")
+# history = read_history()
+# print(history)
+# print("Finished reading history!")
+
+from extensions.super_story_summarizer.ui import *
+
+global params
+params = {
+    "display_name": "Summarizer",
+    "is_tab": True,
+}

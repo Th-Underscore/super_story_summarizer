@@ -13,7 +13,8 @@ What this project has in store for text-generation-webui!
 - Map details of specific subjects (i.e. each character has own list of details)
 - Add current event information (what is currently happening)
 - Add extreme short-term information (what is CURRENTLY happening)
-- Summarize context (i.e. style of narration, 2nd person vs 3rd person) - Save summary of context in specific branch of JSON file for future use
+- Summarize context (i.e. style of narration, 2nd person vs 3rd person) - Save summary of context in specific branch of config JSON file for future use
+- Summarize full histories (for old chats, allow summarizing certain # of messages at a time)
   
 ### Master Settings
 
@@ -28,9 +29,9 @@ What this project has in store for text-generation-webui!
 
   - Total prompt: **HIGH USAGE : --CONTEXT +DATA**
 
-    - *All text after “%%% History” is the story up to this point.*
+    - *All text after "%%% History" is the story up to this point.*
 
-      *All text after “%%% Latest event” is what is currently happening in the story.*
+      *All text after "%%% Latest event" is what is currently happening in the story.*
 
       *Summarize the current story:*
 
@@ -63,7 +64,9 @@ What this project has in store for text-generation-webui!
 
 - JSON branch order
   - Configurable prompts and branches
-    - Master prompt per root (“Summarize the {key} character {key.key}” for “characters” = “Summarize the main character char1”)
-    - Exclusion prompt per branch (“prompt2” for “characters.main.char2”)
+    - Master prompt per root (i.e. "Summarize the {type_of_character} character {character}" for "characters" = "Summarize the main character char1")
+    - Exclusion value per branch (i.e. "prompt$" for "characters.main.char2") 
+    - Generation keys per branch (i.e. "gen1" for 2 main characters and main base), default to current root key (i.e. "main") [string]
+    - Custom generation order based on generation key (default to order in tree)
   - Auto-generate on summarize? [toggleable, button]
 
