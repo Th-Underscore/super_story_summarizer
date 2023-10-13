@@ -11,7 +11,8 @@ from modules.chat import generate_chat_prompt
 from modules.html_generator import fix_newlines
 
 def get_readable_list(seq: list) -> str:
-    """Return a grammatically correct human readable string (with an Oxford comma).
+    """Return a grammatically correct human readable string (with an Oxford comma)
+    Ref: https://stackoverflow.com/a/53981846/
 
     Args:
         seq (list) -> the list to stringify.
@@ -19,7 +20,11 @@ def get_readable_list(seq: list) -> str:
     Returns:
         str -> the list as a readable string.
     """
-    return ", ".join(seq[:-1]) + ", and " + seq[-1] if len(seq) > 1 else seq[0]
+    
+    seq = [str(s) for s in seq]
+    if len(seq) < 3:
+        return ' and '.join(seq)
+    return ', '.join(seq[:-1]) + ', and ' + seq[-1]
 
 test_subjects = {
     "main": [ { "name": "", "properties": { 1, 2, 3, 4, 5 } }, {} ],
