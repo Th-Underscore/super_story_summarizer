@@ -192,4 +192,4 @@ params = {
     "display_name": "Summarizer",
     "is_tab": True,
 }
-from extensions.super_story_summarizer.ui import *
+from extensions.super_story_summarizer.ui.ui import *

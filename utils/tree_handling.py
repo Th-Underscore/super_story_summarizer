@@ -36,7 +36,7 @@ def recursive_get_keys(obj: dict, result: dict, properties: list={}):
     """Get all keys of each branch in the generation dictionary.
 
     Args:
-        obj (dict) -> the generation dictionary\n
+        obj (dict) -> the generation dictionary.\n
         result (list) -> the list reference to be modified.\n
         generations (dict) -> the generation order of each subject.\n
         properties (list, optional) -> recursive variable, leave empty.
@@ -160,3 +160,108 @@ def get_custom_prompts(tree):
 
     string = "{character} is/are [a] {type_of_character} character(s). Please write a summary on {character}'s personality, relations, and overall actions in this story."
     return parse_prompts(result.values())
+
+### TREE VIEW FUNCTIONS
+import re
+re.findall('....', '1234567890')
+(_TREE_SPACE, _TREE_VERTICAL, _TREE_CONNECTOR, _TREE_CORNER) = [
+    "    ",
+    "│   ",
+    "├── ",
+    "└── "
+]
+def recursive_get_tree_string(obj: dict, indent: str = "") -> str:
+    """Format all subjects in a parsed history dictionary as a tree string.
+
+    Args:
+        obj (dict): the parsed JSON history dictionary.
+        indent (str, optional): recursive variable, leave empty.
+
+    Returns:
+        str: The tree representation as a string.
+    """
+    tree = ""
+    length = len(obj)
+    for index, (key, value) in enumerate(obj.items()):
+        if index == length - 1:
+            tree += f"{indent}{_TREE_CORNER}{key}\n"
+            if isinstance(value, dict): tree += recursive_get_tree_string(value, indent + _TREE_SPACE)
+        else:
+            tree += f"{indent}{_TREE_CONNECTOR}{key}\n"
+            if isinstance(value, dict): tree += recursive_get_tree_string(value, indent + _TREE_VERTICAL)
+    return tree
+
+placeholders = {
+    "0-0": "characters",
+    "1-0": "main",
+    "2-0": "John Mush",
+    "2-1": "submain",
+    "3-0": "Paul Mush",
+    "2-2": "Amy Harrison",
+    "1-2": "misc",
+    "2-3": "secondary",
+    "2-4": "side",
+    "0-1": "events",
+    "1-1": "The First Incursion",
+    "1-2": "The Second Incursion",
+    "1-3": "The Mush Offensive",
+    "4-0": "Whoa this is high",
+    "5-0": "Wait, what are you doing?",
+    "6-0": "I think this is enough...",
+    "7-0": "Hello? What's going on?",
+    "8-0": "I'm serious, this is extremely unnecessary.",
+    "9-0": "Alright, cut it out.",
+    "10-0": "Bro, we're at the tenth branch now.",
+    "11-0": "Alright, I'm done.",
+    "20-0": "Okay, you're crazy.",
+    "0": "root",
+    "1": "node",
+    "2": "leaf"
+}
+
+def recursive_get_tree(obj: dict, level: int=0, branch_id: list[int]=[0]) -> list:
+    """Format all subjects in a parsed history dictionary as a tree string.
+
+    Args:
+        obj (dict): the parsed JSON history dictionary.
+        level (int, optional): recursive variable, leave empty.
+        branch_id (list[int], optional): recursive variable, leave empty.
+        textboxes (list[gr.Textbox], optional): recursive variable, leave empty.
+
+    Returns:
+        list[str, list]: The tree representation as a string; the list of textboxes.
+    """
+    tree = ""
+    for index, (key, value) in enumerate(obj.items()):
+        tb = ""
+        if isinstance(value, str):
+            f"branch-{level - 1}-{branch_id[level]}"
+            ''
+        else:
+            print(branch_id)
+            print(f"isdict {isinstance(value, dict)} | islist {isinstance(value, list)} | type {type(value)}")
+            if level < (len(branch_id) - 1):
+                branch_id[level] += 1
+            else:
+                branch_id.append(0)
+            current_branch_id = branch_id[level]
+            if isinstance(value, dict):
+                with gr.Row():
+                    tree += f'<li><details open><summary><div class="tree-div"><textarea class="tree-branch" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></summary><ul> {recursive_get_tree(value, level + 1, branch_id)} </ul></details></li>'
+                    print("dict textbox created")
+            elif isinstance(value, list):
+                tree += f'<li><div class="tree-div"><textarea class="tree-branch" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></li>'
+                print("list textbox created")
+    return f'<ul class="tree">{tree}</ul>' if level == 0 else tree
+
+_LIST_PATH = "extensions/super_story_summarizer/utils/examples/character_list.json"
+with open(_LIST_PATH, "rt") as handle:
+    sbj_list = json.load(handle)
+
+def tree_view():
+    tree = recursive_get_tree(sbj_list)
+    _HTML_PATH = "extensions/super_story_summarizer/ui/test.html"
+    with open(_HTML_PATH, "wt") as f:
+        f.write(tree)
+    print(f"result tree ::: {tree}")
+    return tree

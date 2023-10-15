@@ -26,3 +26,5 @@ def tree_editor(tree: dict, btn: gr.Button):
 
     # Update the tree when any of the text boxes are edited
     btn.click(update_tree, inputs=inputs, outputs=None)
+
+print(len([1, 2, 3]))

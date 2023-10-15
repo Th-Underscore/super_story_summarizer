@@ -1,0 +1,139 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.tree {
+  --spacing : 1.5rem;
+  --radius  : 10px;
+}
+
+.tree li {
+  display      : block;
+  position     : relative;
+  padding-left : calc(2 * var(--spacing) - var(--radius) - 2px) !important;
+}
+
+.tree ul {
+  margin-left  : calc(var(--radius) - var(--spacing)) !important;
+  padding-left : 0 !important;
+}
+
+.tree ul li {
+  border-left : 2px solid #ddd !important;
+}
+
+.tree ul li:last-child {
+  border-color : transparent !important;
+}
+
+.tree ul li::before {
+  content      : '';
+  display      : block;
+  position     : absolute;
+  top          : calc(var(--spacing) / -2);
+  left         : -2px;
+  width        : calc(var(--spacing) + 2px);
+  height       : calc(var(--spacing) + 1px);
+  border       : solid #ddd;
+  border-width : 0 0 2px 2px;
+}
+
+.tree summary {
+  display : block;
+  cursor  : pointer;
+}
+
+.tree summary::marker,
+.tree summary::-webkit-details-marker {
+  display : none;
+}
+
+.tree summary:focus {
+  outline : none;
+}
+
+.tree summary:focus-visible {
+  outline : 1px dotted #000;
+}
+
+.tree li::after,
+.tree summary::before {
+  content       : '';
+  display       : block;
+  position      : absolute;
+  top           : calc(var(--spacing) / 2 - var(--radius));
+  left          : calc(var(--spacing) - var(--radius) - 1px);
+  width         : calc(2 * var(--radius));
+  height        : calc(2 * var(--radius));
+  border-radius : 50%;
+  background    : #ddd;
+}
+
+.tree summary::before {
+  z-index    : 1;
+  background : #205192 url('https://iamkate.com/code/tree-views/expand-collapse.svg') 0 0;
+}
+
+.tree details[open] > summary::before {
+  background-position : calc(-2 * var(--radius)) 0;
+}
+
+.tree-div {
+  position: relative;
+  margin: 0;
+  box-shadow: var(--block-shadow);
+  border-width: var(--block-border-width);
+  border-color: var(--block-border-color);
+  border-radius: var(--block-radius);
+  background: var(--block-background-fill);
+  width: 150px;
+  line-height: var(--line-sm);
+}
+
+.tree-branch {
+  height: 24px;
+  padding: var(--input-padding) !important;
+  white-space: nowrap !important;
+  overflow: auto !important;
+  flex-grow: 0 !important;
+
+  display: block !important;
+  position: relative !important;
+  outline: none !important;
+  box-shadow: var(--input-shadow) !important;
+  border: var(--input-border-width) solid var(--input-border-color) !important;
+  border-radius: var(--input-radius) !important;
+  background: unset !important;
+  width: 100% !important;
+  color: var(--body-text-color) !important;
+  font-weight: var(--input-text-weight) !important;
+  font-size: var(--input-text-size) !important;
+  line-height: var(--line-sm) !important;
+}
+
+.tree-branch::placeholder {
+  color: var(--body-text-color) !important;
+  opacity: 40% !important
+}
+
+.tree-b {
+  padding: unset !important;
+  white-space: nowrap !important;
+  overflow: auto !important;
+}
+
+.subject-tree {
+  background: unset !important;
+}
+</style>
+</head>
+<body>
+
+<h2>Tree View</h2>
+<p>A tree view represents a hierarchical view of information, where each item can have a number of subitems.</p>
+<p>Click on the arrow(s) to open or close the tree branches.</p>
+
+
+
+</body>
+</html>
