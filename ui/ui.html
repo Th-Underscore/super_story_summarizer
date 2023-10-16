@@ -71,7 +71,7 @@
 
 .tree summary::before {
   z-index    : 1;
-  background : #205192 url('https://iamkate.com/code/tree-views/expand-collapse.svg') 0 0;
+  background : #17447e url('https://iamkate.com/code/tree-views/expand-collapse.svg') 0 0;
 }
 
 .tree details[open] > summary::before {
@@ -86,12 +86,22 @@
   border-color: var(--block-border-color);
   border-radius: var(--block-radius);
   background: var(--block-background-fill);
-  width: 150px;
   line-height: var(--line-sm);
 }
 
 .tree-branch {
   height: 24px;
+
+  font-weight: var(--input-text-weight) !important;
+  font-size: var(--input-text-size) !important;
+}
+
+.tree-branch::placeholder {
+  color: var(--body-text-color) !important;
+  opacity: 40% !important;
+}
+
+.branch-text {
   padding: unset !important;
   padding-left: 4px !important;
   white-space: nowrap !important;
@@ -109,20 +119,32 @@
   background: unset !important;
   width: 100% !important;
   color: var(--body-text-color) !important;
-  font-weight: var(--input-text-weight) !important;
-  font-size: var(--input-text-size) !important;
   line-height: var(--line-sm) !important;
 }
 
-.tree-branch::placeholder {
-  color: var(--body-text-color) !important;
-  opacity: 40% !important
+.branch-part {
+  display: flex !important;
+  align-items: center;
 }
 
-.tree-b {
-  padding: unset !important;
-  white-space: nowrap !important;
-  overflow: auto !important;
+.branch-part > div {
+  margin-right: 3px;
+}
+
+.branch-property {
+  height: 20px !important;
+  font-weight: var(--input-text-weight) !important;
+  font-size: calc(var(--input-text-size) * 0.8) !important;
+}
+
+.property-div {
+  position: relative;
+  margin: 0;
+  box-shadow: var(--block-shadow);
+  border-width: var(--block-border-width);
+  border-color: var(--block-border-color);
+  border-radius: var(--block-radius);
+  background: var(--block-background-fill);
 }
 
 .subject-tree {

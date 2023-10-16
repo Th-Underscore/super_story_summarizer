@@ -219,25 +219,31 @@ placeholders = {
     "2": "leaf"
 }
 
-def recursive_get_tree(obj: dict, level: int=0, branch_id: list[int]=[0]) -> list:
+def recursive_get_tree(obj: dict, level: int=0, branch_id: list[int]=[0], parent_html: str="") -> list:
     """Format all subjects in a parsed history dictionary as a tree string.
 
     Args:
         obj (dict): the parsed JSON history dictionary.
         level (int, optional): recursive variable, leave empty.
         branch_id (list[int], optional): recursive variable, leave empty.
-        textboxes (list[gr.Textbox], optional): recursive variable, leave empty.
+        parent_html (str, optional): recursive variable, leave empty.
 
     Returns:
         list[str, list]: The tree representation as a string; the list of textboxes.
     """
     tree = ""
+    current_branch_id = 0
+    reading_properties = True
     for index, (key, value) in enumerate(obj.items()):
         tb = ""
         if isinstance(value, str):
-            f"branch-{level - 1}-{branch_id[level]}"
-            ''
+            current_branch_id = current_branch_id or branch_id[level]
+            tree += f'<div class="branch-part branch-property property-div"><textarea class="branch-property branch-text" id="property-branch-{level}-{index}-{current_branch_id}">{key}: {value}</textarea></div>'
+            'NOT <LI>!!!!!'
         else:
+            if (reading_properties):
+                if level != 0: tree += "</div><details open><summary></summary><ul>"
+            reading_properties = False
             print(branch_id)
             print(f"isdict {isinstance(value, dict)} | islist {isinstance(value, list)} | type {type(value)}")
             if level < (len(branch_id) - 1):
@@ -247,10 +253,10 @@ def recursive_get_tree(obj: dict, level: int=0, branch_id: list[int]=[0]) -> lis
             current_branch_id = branch_id[level]
             if isinstance(value, dict):
                 with gr.Row():
-                    tree += f'<li><details open><summary><div class="tree-div"><textarea class="tree-branch" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></summary><ul> {recursive_get_tree(value, level + 1, branch_id)} </ul></details></li>'
+                    tree += f'<li><div class="branch-part"><div class="tree-div"><textarea class="tree-branch branch-text" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div>{recursive_get_tree(value, level + 1, branch_id)}</ul></details></li>'
                     print("dict textbox created")
             elif isinstance(value, list):
-                tree += f'<li><div class="tree-div"><textarea class="tree-branch" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></li>'
+                tree += f'<li><div class="branch-part"><div class="tree-div"><textarea class="tree-branch branch-text" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></div></li>'
                 print("list textbox created")
     return f'<ul class="tree">{tree}</ul>' if level == 0 else tree
 

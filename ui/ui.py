@@ -86,7 +86,7 @@ def generate_tree(data: dict):
         with open(_JSON_PATH, "rt") as handle:
             _HISTORY = json.load(handle)
         with gr.Row():
-            with gr.Column(scale=1, min_width=450, variant="compact", elem_classes="subject-tree") as tree:
+            with gr.Column(scale=1, min_width=850, variant="compact", elem_classes="subject-tree") as tree:
                 inputs = []
                 output = gr.HTML(elem_classes="horizontal-scroll")
                 btn = gr.Button("Test", elem_id="subject-button")
