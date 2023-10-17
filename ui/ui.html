@@ -3,152 +3,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .tree {
-  --spacing : 1.5rem;
-  --radius  : 10px;
+	--spacing: 1.5rem;
+	--radius : 10px;
 }
 
 .tree li {
-  display      : block;
-  position     : relative;
-  padding-left : calc(2 * var(--spacing) - var(--radius) - 2px) !important;
+	display     : block;
+	position    : relative;
+	padding-left: calc(2 * var(--spacing) - var(--radius) - 2px) !important;
 }
 
 .tree ul {
-  margin-left  : calc(var(--radius) - var(--spacing)) !important;
-  padding-left : 0 !important;
+	margin-left : calc(var(--radius) - var(--spacing)) !important;
+	padding-left: 0 !important;
 }
 
 .tree ul li {
-  border-left : 2px solid #ddd !important;
+	border-left: 2px solid #ddd !important;
 }
 
 .tree ul li:last-child {
-  border-color : transparent !important;
+	border-color: transparent !important;
 }
 
 .tree ul li::before {
-  content      : '';
-  display      : block;
-  position     : absolute;
-  top          : calc(var(--spacing) / -2);
-  left         : -2px;
-  width        : calc(var(--spacing) + 2px);
-  height       : calc(var(--spacing) + 1px);
-  border       : solid #ddd;
-  border-width : 0 0 2px 2px;
+	content : '';
+	display : block;
+	position: absolute;
+	top     : calc(var(--spacing) / -2);
+	left    : -2px;
+	width   : calc(var(--spacing) + 2px);
+	height  : calc(var(--spacing) + 1px);
+	border  : solid #ddd;
+	border-width : 0 0 2px 2px;
 }
 
 .tree summary {
-  display : block;
-  cursor  : pointer;
+	display: block;
+	cursor : pointer;
 }
 
 .tree summary::marker,
 .tree summary::-webkit-details-marker {
-  display : none;
+	display: none;
 }
 
 .tree summary:focus {
-  outline : none;
+	outline: none;
 }
 
 .tree summary:focus-visible {
-  outline : 1px dotted #000;
+	outline: 1px dotted #000;
 }
 
 .tree li::after,
 .tree summary::before {
-  content       : '';
-  display       : block;
-  position      : absolute;
-  top           : calc(var(--spacing) / 2 - var(--radius));
-  left          : calc(var(--spacing) - var(--radius) - 1px);
-  width         : calc(2 * var(--radius));
-  height        : calc(2 * var(--radius));
-  border-radius : 50%;
-  background    : #ddd;
+	content      : '';
+	display      : block;
+	position     : absolute;
+	top          : calc(var(--spacing) / 2 - var(--radius));
+	left         : calc(var(--spacing) - var(--radius) - 1px);
+	width		 : calc(2 * var(--radius));
+	height       : calc(2 * var(--radius));
+	border-radius: 50%;
+	background   : #ddd;
 }
 
 .tree summary::before {
-  z-index    : 1;
-  background : #17447e url('https://iamkate.com/code/tree-views/expand-collapse.svg') 0 0;
+	z-index   : 1;
+	background: #164266 url('https://iamkate.com/code/tree-views/expand-collapse.svg') 0 0;
 }
 
 .tree details[open] > summary::before {
-  background-position : calc(-2 * var(--radius)) 0;
+	background-position: calc(-2 * var(--radius)) 0;
 }
 
 .tree-div {
-  position: relative;
-  margin: 0;
-  box-shadow: var(--block-shadow);
-  border-width: var(--block-border-width);
-  border-color: var(--block-border-color);
-  border-radius: var(--block-radius);
-  background: var(--block-background-fill);
-  line-height: var(--line-sm);
+	position     : relative;
+	margin       : 0;
+	box-shadow   : var(--block-shadow);
+	border-width : var(--block-border-width);
+	border-color : var(--block-border-color);
+	border-radius: var(--block-radius);
+	background   : var(--block-background-fill);
+	line-height  : var(--line-sm);
 }
 
 .tree-branch {
-  height: 24px;
+	overflow   : auto !important;
+	height     : 24px;
 
-  font-weight: var(--input-text-weight) !important;
-  font-size: var(--input-text-size) !important;
+	font-weight: var(--input-text-weight) !important;
+	font-size  : var(--input-text-size) !important;
 }
 
 .tree-branch::placeholder {
-  color: var(--body-text-color) !important;
-  opacity: 40% !important;
+	color  : var(--body-text-color) !important;
+	opacity: 40% !important;
 }
 
 .branch-text {
-  padding: unset !important;
-  padding-left: 4px !important;
-  white-space: nowrap !important;
-  overflow: auto !important;
-  flex-grow: 0 !important;
-  resize: unset !important;
-  text-align: justify !important;
+	padding      : unset !important;
+	padding-left : 4px !important;
+	white-space  : nowrap !important;
+	flex-grow    : 0 !important;
+	resize       : unset !important;
+	text-align   : justify !important;
 
-  display: block !important;
-  position: relative !important;
-  outline: none !important;
-  box-shadow: var(--input-shadow) !important;
-  border: var(--input-border-width) solid var(--input-border-color) !important;
-  border-radius: var(--input-radius) !important;
-  background: unset !important;
-  width: 100% !important;
-  color: var(--body-text-color) !important;
-  line-height: var(--line-sm) !important;
+	display      : block !important;
+	position     : relative !important;
+	outline      : none !important;
+	box-shadow   : var(--input-shadow) !important;
+	border       : var(--input-border-width) solid var(--input-border-color) !important;
+	border-radius: var(--input-radius) !important;
+	background   : unset !important;
+	width        : 100% !important;
+	color        : var(--body-text-color) !important;
+	line-height  : var(--line-sm) !important;
 }
 
 .branch-part {
-  display: flex !important;
-  align-items: center;
+	display    : flex !important;
+	align-items: center;
 }
 
 .branch-part > div {
-  margin-right: 3px;
+	margin-right: 3px;
 }
 
 .branch-property {
-  height: 20px !important;
-  font-weight: var(--input-text-weight) !important;
-  font-size: calc(var(--input-text-size) * 0.8) !important;
+	overflow   : hidden !important;
+	height     : 20px;
+	font-weight: var(--input-text-weight) !important;
+	font-size  : calc(var(--input-text-size) * 0.8) !important;
+}
+
+.long-property {
+	height: 24px !important;
 }
 
 .property-div {
-  position: relative;
-  margin: 0;
-  box-shadow: var(--block-shadow);
-  border-width: var(--block-border-width);
-  border-color: var(--block-border-color);
-  border-radius: var(--block-radius);
-  background: var(--block-background-fill);
+	position     : relative;
+	margin       : 0;
+	box-shadow   : var(--block-shadow);
+	border-width : var(--block-border-width);
+	border-color : var(--block-border-color);
+	border-radius: var(--block-radius);
+	background   : var(--block-background-fill);
 }
 
 .subject-tree {
-  background: unset !important;
+	background: unset !important;
 }
 </style>
 </head>

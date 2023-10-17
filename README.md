@@ -21,33 +21,33 @@ What this project has in store for text-generation-webui!
 - Active summarization (summarize each new line and push it to array) vs total summarization (get full story and summarize)
   - Active prompt: **LOW-MEDIUM USAGE : -CONTEXT ++DATA**
 
-    - *Summarize the current events:*
+	- *Summarize the current events:*
 
-      *(get last elements in history)*
+	  *(get last elements in history)*
 
-      *(append to summary)*
+	  *(append to summary)*
 
   - Total prompt: **HIGH USAGE : --CONTEXT +DATA**
 
-    - *All text after "%%% History" is the story up to this point.*
+	- *All text after "%%% History" is the story up to this point.*
 
-      *All text after "%%% Latest event" is what is currently happening in the story.*
+	  *All text after "%%% Latest event" is what is currently happening in the story.*
 
-      *Summarize the current story:*
+	  *Summarize the current story:*
 
-      *%%% History*
+	  *%%% History*
 
-      *(get current summary)*
+	  *(get current summary)*
 
-      *%%% Latest event*
+	  *%%% Latest event*
 
-      *(get last elements in history)*
+	  *(get last elements in history)*
 
-      *(replace summary)*
+	  *(replace summary)*
 - Summary weight [float] **LOW USAGE : +CONTEXT**
   - Begin summarization/intensify summarization depending on:
-    - current amount of data stored
-    - total \# of messages
+	- current amount of data stored
+	- total \# of messages
 - Include timestamp [bool] **LOW USAGE : +CONTEXT**
 - Summary break (how summary should be split, i.e. per day or per scene) [string] **CONFIG : -CONTEXT**
 - Memory loss **LOW USAGE : --CONTEXT -DATA**
@@ -64,9 +64,9 @@ What this project has in store for text-generation-webui!
 
 - JSON branch order
   - Configurable prompts and branches
-    - Master prompt per root (i.e. "Summarize the {type_of_character} character {character}" for "characters" = "Summarize the main character char1")
-    - Exclusion value per branch (i.e. "prompt$" for "characters.main.char2") 
-    - Generation keys per branch (i.e. "gen1" for 2 main characters and main base), default to current root key (i.e. "main") [string]
-    - Custom generation order based on generation key (default to order in tree)
+	- Master prompt per root (i.e. "Summarize the {type_of_character} character {character}" for "characters" = "Summarize the main character char1")
+	- Exclusion value per branch (i.e. "prompt$" for "characters.main.char2") 
+	- Generation keys per branch (i.e. "gen1" for 2 main characters and main base), default to current root key (i.e. "main") [string]
+	- Custom generation order based on generation key (default to order in tree)
   - Auto-generate on summarize? [toggleable, button]
 

@@ -21,17 +21,17 @@ _LTM_STATS_TEMPLATE = """{num_memories_seen_by_bot} memories are loaded in the b
 {num_memories_in_ram} memories are loaded in RAM
 {num_memories_on_disk} memories are saved to disk"""
 with open(_CONFIG_PATH, "rt") as handle:
-    _CONFIG = json.load(handle)
+	_CONFIG = json.load(handle)
 
 """# === Module-level variables ===
 debug_texts = {
-    "current_memory_text": "(None)",
-    "num_memories_loaded": 0,
-    "current_context_block": "(None)",
+	"current_memory_text": "(None)",
+	"num_memories_loaded": 0,
+	"current_context_block": "(None)",
 }
 memory_database = LtmDatabase(
-    pathlib.Path("./extensions/super_story_summarizer/user_data/summaries"),
-    num_memories_to_fetch=_CONFIG["sss_reads"]["num_memories_to_fetch"],
+	pathlib.Path("./extensions/super_story_summarizer/user_data/summaries"),
+	num_memories_to_fetch=_CONFIG["sss_reads"]["num_memories_to_fetch"],
 )"""
 
 print("----------")
@@ -42,79 +42,79 @@ pprint.pprint(_CONFIG)
 print("----------")
 
 def setup():
-    print("Loaded Super Story Summarizer!")
+	print("Loaded Super Story Summarizer!")
 
 def input_modifier(
-    user_input,
-    state
+	user_input,
+	state
 ):
-    bot_name = state["name1"]
-    user_name = state["name2"]
+	bot_name = state["name1"]
+	user_name = state["name2"]
 
-    print("Context:")
-    print(state["context"])
+	print("Context:")
+	print(state["context"])
 
-    print("Input:")
-    print(user_input)
+	print("Input:")
+	print(user_input)
 
-    print("========== STATE ==========")
-    print(state)
+	print("========== STATE ==========")
+	print(state)
 
-    history = state["history"]["internal"]
-    print("History:")
-    print(f"{history} ::: {not history}")
+	history = state["history"]["internal"]
+	print("History:")
+	print(f"{history} ::: {not history}")
 
-    joinedHistory = ""
-    if len(history) != 0:
-        for el in history:
-            print(f"el {el}")
-            joinedHistory = f"{joinedHistory}\n\n\n{bot_name}: {el[0]}\n\n{user_name}: {el[1]}"
+	joinedHistory = ""
+	if len(history) != 0:
+		for el in history:
+			print(f"el {el}")
+			joinedHistory = f"{joinedHistory}\n\n\n{bot_name}: {el[0]}\n\n{user_name}: {el[1]}"
 
-    print("Joined history:")
-    print(joinedHistory)
+	print("Joined history:")
+	print(joinedHistory)
 
-    # generate_chat_prompt()
+	# generate_chat_prompt()
 
-    return user_input
+	return user_input
 
 
 """def custom_generate_chat_prompt(
-    user_input,
-    state,
-    **kwargs,
+	user_input,
+	state,
+	**kwargs,
 ):
-    ""Main hook that allows us to fetch and store memories from/to LTM.""
-    print("=" * 60)
+	""Main hook that allows us to fetch and store memories from/to LTM.""
+	print("=" * 60)
 
-    character_name = state["name2"].strip().lower().replace(" ", "_")
-    memory_database.load_character_db_if_new(character_name)
+	character_name = state["name2"].strip().lower().replace(" ", "_")
+	memory_database.load_character_db_if_new(character_name)
 
-    user_input = fix_newlines(user_input)
+	user_input = fix_newlines(user_input)
 
-    # === Call oobabooga's original generate_chat_prompt ===
-    augmented_context = state["context"]
-    if memory_context is not None:
-        augmented_context = _build_augmented_context(memory_context, state["context"])
-    debug_texts["current_context_block"] = augmented_context
+	# === Call oobabooga's original generate_chat_prompt ===
+	augmented_context = state["context"]
+	if memory_context is not None:
+		augmented_context = _build_augmented_context(memory_context, state["context"])
+	debug_texts["current_context_block"] = augmented_context
 
-    kwargs["also_return_rows"] = True
-    state["context"] = augmented_context
-    (prompt, prompt_rows) = generate_chat_prompt(
-        user_input,
-        state,
-        **kwargs,
-    )
+	kwargs["also_return_rows"] = True
+	state["context"] = augmented_context
+	(prompt, prompt_rows) = generate_chat_prompt(
+		user_input,
+		state,
+		**kwargs,
+	)
 
-    bot_message = prompt_rows[_LAST_BOT_MESSAGE_INDEX]
+	bot_message = prompt_rows[_LAST_BOT_MESSAGE_INDEX]
 
-    print("name:", state["name2"])
-    print("message:", bot_message)
+	print("name:", state["name2"])
+	print("message:", bot_message)
 
-    print("name:", state["name1"])
-    print("message:", user_input)
-    print("-----------------------")
+	print("name:", state["name1"])
+	print("message:", user_input)
+	print("-----------------------")
 
-    return prompt
+	return prompt
 """
 
 print("Importing tree_handling.py...")
@@ -122,61 +122,61 @@ from extensions.super_story_summarizer.utils.tree_handling import *
 print("Finished importing tree_handling.py!")
 
 example_summary_config = {
-    "characters": {
-        "type_of_subject": "characters",
-        "prompt": "This is an example. Type: {type_of_character}, name: {name}, extra list: {extra_list}",
-        "main": {
-            "type_of_character": "main",
-            "values": [
-                { "name": "char1" },
-                { "name": "char2" },
-                { "name": "char0", "prompt": "Hello, I am {name}, a {type_of_character} character.", "generation_key": "gen1" }
-            ]
-        },
-        "secondary": {
-            "type_of_character": "secondary",
-            "values": [
-                { "name": "char3", "generation_key": "gen2" },
-                { "name": "char4", "generation_key": "gen1" },
-                { "name": "char5" },
-                { "name": "char6" },
-            ]
-        },
-        "extra": {
-            "type_of_character": "extra",
-            "sub": {
-                "extra_list": "sub",
-                "values": [
-                    { "name": "char7" },
-                    { "name": "char8" }
-                ]
-            },
-            "sub2": {
-                "extra_list": "sub2",
-                "values": [
-                    { "name": "char9", "generation_key": "gen2" },
-                    { "name": "char10" }
-                ]
-            }
-        }
-    }
+	"characters": {
+		"type_of_subject": "characters",
+		"prompt": "This is an example. Type: {type_of_character}, name: {name}, extra list: {extra_list}",
+		"main": {
+			"type_of_character": "main",
+			"values": [
+				{ "name": "char1" },
+				{ "name": "char2" },
+				{ "name": "char0", "prompt": "Hello, I am {name}, a {type_of_character} character.", "generation_key": "gen1" }
+			]
+		},
+		"secondary": {
+			"type_of_character": "secondary",
+			"values": [
+				{ "name": "char3", "generation_key": "gen2" },
+				{ "name": "char4", "generation_key": "gen1" },
+				{ "name": "char5" },
+				{ "name": "char6" },
+			]
+		},
+		"extra": {
+			"type_of_character": "extra",
+			"sub": {
+				"extra_list": "sub",
+				"values": [
+					{ "name": "char7" },
+					{ "name": "char8" }
+				]
+			},
+			"sub2": {
+				"extra_list": "sub2",
+				"values": [
+					{ "name": "char9", "generation_key": "gen2" },
+					{ "name": "char10" }
+				]
+			}
+		}
+	}
 }
 
 # example_summary_config = {
-#     "main=type_of_character": {
-#         "character": [{ "overrides": {}, "names": [ "John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington" ] }]
-#     },
-#     "secondary=type_of_character": {
-#         "character": [{ "overrides": {}, "names": [ "Sonya Lopez" ] }]
-#     },
-#     "side=type_of_character": {
-#         "character": [{ "overrides": {}, "names": [ "Harry Washington" ] }]
-#     }
+#	 "main=type_of_character": {
+#		 "character": [{ "overrides": {}, "names": [ "John Mush", "Paul Mush", "Amy Harrison", "Angelina Washington" ] }]
+#	 },
+#	 "secondary=type_of_character": {
+#		 "character": [{ "overrides": {}, "names": [ "Sonya Lopez" ] }]
+#	 },
+#	 "side=type_of_character": {
+#		 "character": [{ "overrides": {}, "names": [ "Harry Washington" ] }]
+#	 }
 # }
 
 script = get_custom_prompts(example_summary_config)
 for line in script:
-    print(line)
+	print(line)
 
 # print("Importing history_parser.py...")
 # from extensions.super_story_summarizer.utils.history_parser import *
@@ -189,7 +189,7 @@ for line in script:
 
 global params
 params = {
-    "display_name": "Summarizer",
-    "is_tab": True,
+	"display_name": "Summarizer",
+	"is_tab": True,
 }
 from extensions.super_story_summarizer.ui.ui import *
