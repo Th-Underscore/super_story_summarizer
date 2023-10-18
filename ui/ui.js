@@ -1,22 +1,37 @@
+/**
+ * Connect to Gradio to share Python variables and vice versa.
+ */
+async function communicateWithPython() {
+	// let gradio = await import("@gradio/client");
+	// let client = gradio.client;
+	// const app = await client(LISTEN_HOST);
+}
+
+window.superStorySummarizer = {};
+/**
+ * Global module values to communicate between client JavaScript and server Python.
+**/
+let summarizerValues = window.superStorySummarizer;
+
+summarizerValues.test = "THIS IS A TEST. CAN PYTHON READ THIS?"
+
 console.log("Running summarizer JS...");
-let subjectButton = document.getElementById("subject-button");
-subjectButton.addEventListener("click", function() {
-	console.log("JS waiting...")
-	setTimeout(function() {
-		console.log("JS looping!")
-		let branches = document.getElementsByClassName("tree-branch");
-		for (let i = 0; i < branches.length; i++) {
-			console.log(`brch i ${i}`);
-			/** The current looped branch 
-			 * @type {Element} */
-			let branch = branches[i];
-			console.log(`brch id ${branch.id}`);
-			branch.addEventListener("keyup", function(event) {
-				if (event.keyCode === 13) {
-					subjectButton.click();
-				}
+let tabs = document.getElementsByClassName("tab-nav");
+for (let i = 0; i < tabs.length; i++) {
+	let tabButtons = tabs[i].getElementsByTagName("*");
+	/** @type {Button} */
+	let summarizerTab;
+	for (let j = 0; j < tabButtons.length; j++) {
+		let tabButton = tabButtons[i];
+		if (tabButton && (tabButton.innerHTML == "Summarizer")) {
+			tabButton.addEventListener("click", function() {
+				
 			});
 		}
-	}, 2000);
-});
+	};
+	console.log(`${tabs[i].getElementsByTagName("*")} | ${tabs[i].firstChild.textContent}`);
+	console.log(tabs[i].firstChild);
+};
 console.log("Finished running summarizer JS!");
+
+communicateWithPython();
