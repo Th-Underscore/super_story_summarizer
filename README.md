@@ -1,12 +1,14 @@
 ﻿# Super Story Summarizer
 
-**This README will be properly formatted in the future, I'm too lazy to do it now.**
+*This README will be properly formatted in the future, I'm too lazy to do it now.*
+
+**As of 2023-10-16, I am having difficulty progressing due to building upon Gradio and its inability to have dynamic elements i.e. textboxes while keeping this a zero-external-library extension. Although it is possible to simply create 100 textboxes with ids 1–10 * 1–10 and hide them, I would rather not do that, though I will if I have to. JavaScript -> Python communication is simple enough thanks to button clicking events, but vice versa is not, when using Gradio.**
 
 ## Current features
 - Nothing useful 🤣
 
 ## Planned features
-What this project has in store for text-generation-webui!
+What does this project have in store for text-generation-webui?
 
 ### Main Ideas
 
