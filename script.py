@@ -13,8 +13,6 @@ from modules.chat import generate_chat_prompt
 from modules.text_generation import generate_reply
 from modules.html_generator import fix_newlines
 
-import extensions.super_story_summarizer.config as config
-
 # === Internal constants (don't change these without good reason) ===
 _CONFIG_PATH = "extensions/super_story_summarizer/sss_config.json"
 _MIN_ROWS_TILL_RESPONSE = 5
@@ -176,9 +174,9 @@ example_summary_config = {
 #	 }
 # }
 
-# script = get_custom_prompts(example_summary_config)
-# for line in script:
-# 	print(line)
+script = get_custom_prompts(example_summary_config)
+for line in script:
+	print(line)
 
 # print("Importing history_parser.py...")
 # from extensions.super_story_summarizer.utils.history_parser import *

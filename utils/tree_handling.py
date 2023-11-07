@@ -10,8 +10,6 @@ import modules.shared as shared
 from modules.chat import generate_chat_prompt
 from modules.html_generator import fix_newlines
 
-import extensions.super_story_summarizer.config as config
-
 def get_readable_list(seq: list) -> str:
 	"""Return a grammatically correct human readable string (with an Oxford comma)
 	Ref: https://stackoverflow.com/a/53981846/
@@ -59,6 +57,7 @@ def recursive_get_keys(obj: dict, result: dict, properties: list={}):
 					# Exclude "name" key from properties.
 					else:
 						sbj_properties[sbj_key] = sbj_value
+				print(f"generation key {generation_key} | name {name}")
 				# Add subject name and properties to result using generation key.
 				result.setdefault(generation_key, []).append({"name": name, "properties": sbj_properties})
 		elif isinstance(obj_value, str):
@@ -78,6 +77,7 @@ def parse_prompts(data: list):
 		list: The list of prompts to use for generation.
 	"""
 	
+	print(data)
 	prompts = []
 	for generation in data: # i.e. main or gen1
 		# Total dictionary of prompts for current generation
@@ -170,7 +170,7 @@ re.findall('....', '1234567890')
 	"├── ",
 	"└── "
 ]
-def generate_tree_string(obj: dict, indent: str = "") -> str:
+def recursive_get_tree_string(obj: dict, indent: str = "") -> str:
 	"""Format all subjects in a parsed history dictionary as a tree string.
 
 	Args:
@@ -185,10 +185,10 @@ def generate_tree_string(obj: dict, indent: str = "") -> str:
 	for index, (key, value) in enumerate(obj.items()):
 		if index == length - 1:
 			tree += f"{indent}{_TREE_CORNER}{key}\n"
-			if isinstance(value, dict): tree += generate_tree_string(value, indent + _TREE_SPACE)
+			if isinstance(value, dict): tree += recursive_get_tree_string(value, indent + _TREE_SPACE)
 		else:
 			tree += f"{indent}{_TREE_CONNECTOR}{key}\n"
-			if isinstance(value, dict): tree += generate_tree_string(value, indent + _TREE_VERTICAL)
+			if isinstance(value, dict): tree += recursive_get_tree_string(value, indent + _TREE_VERTICAL)
 	return tree
 
 placeholders = {
@@ -219,50 +219,55 @@ placeholders = {
 	"2": "leaf"
 }
 
-def generate_tree(obj: dict, level: int=0, branch_id: int=-1, parent_html: str="") -> tuple[str, int]:
+def recursive_get_tree(obj: dict, level: int=0, branch_id: list[int]=[0], parent_html: str="") -> list:
 	"""Format all subjects in a parsed history dictionary as a tree string.
 
 	Args:
 		obj (dict): the parsed JSON history dictionary.
 		level (int, optional): recursive variable, leave empty.
-		branch_id (int, optional): recursive variable, leave empty.
+		branch_id (list[int], optional): recursive variable, leave empty.
 		parent_html (str, optional): recursive variable, leave empty.
 
 	Returns:
-		tuple[str, int]: the tree representation as a string.
+		list[str, list]: The tree representation as a string; the list of textboxes.
 	"""
 	tree = ""
-	# If reading properties of branch or values
-	is_reading_properties = True
+	current_branch_id = 0
+	reading_properties = True
 	for index, (key, value) in enumerate(obj.items()):
 		tb = ""
-		branch_id += 1
-		# Grab preset hidden textbox and use for tree
-		textbox = config.textboxes[branch_id]
-		textbox.visible = True
-		textbox.value = key
-		print(f"textbox {textbox.value} | isvisible {textbox.visible}")
 		if isinstance(value, str):
-			textbox.placeholder = "key"
-			textbox.elem_classes.append("key-branch branch-text")
-			branch_id += 1
-			value_box = config.textboxes[branch_id]
-			value_box.visible = True
-			value_box.value = value
-			value_box.placeholder = "value"
-			value_box.elem_classes.append("value-branch branch-text")
-			#tree += f'<div class="branch-part property-div"><textarea class="branch-property branch-text" id="placeholder-{level}-{index}-{branch_id}">{key}: {value}</textarea></div>'
+			current_branch_id = current_branch_id or branch_id[level]
+			tree += f'<div class="branch-part property-div"><textarea class="branch-property branch-text" id="property-branch-{level}-{index}-{current_branch_id}">{key}: {value}</textarea></div>'
+			'NOT <LI>!!!!!'
 		else:
-			if is_reading_properties and (level != 0):
-				tree += "</div><details open><summary></summary><ul>"
-			is_reading_properties = False
-			textbox.placeholder = placeholders[str(level%3)]
-			textbox.elem_classes.append("gradio-branch")
-			print(f"branch id {branch_id} | {key}")
+			if (reading_properties):
+				if level != 0: tree += "</div><details open><summary></summary><ul>"
+			reading_properties = False
+			print(branch_id)
+			print(f"isdict {isinstance(value, dict)} | islist {isinstance(value, list)} | type {type(value)}")
+			if level < (len(branch_id) - 1):
+				branch_id[level] += 1
+			else:
+				branch_id.append(0)
+			current_branch_id = branch_id[level]
 			if isinstance(value, dict):
-				current_branch_id = branch_id
-				(new_tree, branch_id) = generate_tree(value, level + 1, branch_id)
-				tree += f'<li><div class="branch-part"><div class="tree-div" id="placeholder-{current_branch_id}"></div>{new_tree}</ul></details></li>'
+				with gr.Row():
+					tree += f'<li><div class="branch-part"><div class="tree-div"><textarea class="tree-branch branch-text" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div>{recursive_get_tree(value, level + 1, branch_id)}</ul></details></li>'
+					print("dict textbox created")
 			elif isinstance(value, list):
-				tree += f'<li><div class="branch-part"><div class="tree-div" id="placeholder-{branch_id}"></div></div></li>'
-	return (f'<ul class="tree">{tree}</ul>' if level == 0 else tree), branch_id
+				tree += f'<li><div class="branch-part"><div class="tree-div"><textarea class="tree-branch branch-text" id="parent-branch-{level}-{index}-{current_branch_id}" placeholder="{placeholders[str(level%3)]}">{key}</textarea></div></div></li>'
+				print("list textbox created")
+	return f'<ul class="tree">{tree}</ul>' if level == 0 else tree
+
+_LIST_PATH = "extensions/super_story_summarizer/utils/examples/character_list.json"
+with open(_LIST_PATH, "rt") as handle:
+	sbj_list = json.load(handle)
+
+def tree_view():
+	tree = recursive_get_tree(sbj_list)
+	_HTML_PATH = "extensions/super_story_summarizer/ui/test.html"
+	with open(_HTML_PATH, "wt") as f:
+		f.write(tree)
+	print(f"result tree ::: {tree}")
+	return tree
