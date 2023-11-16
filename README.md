@@ -18,8 +18,8 @@ What does this project have in store for text-generation-webui?
 - Summarize context (i.e. style of narration, 2nd person vs 3rd person) - Save summary of context in specific branch of config JSON file for future use
 - Summarize full histories (for old chats, allow summarizing certain # of messages at a time)
 - Utilize vector matrix of full chat history to search specific keywords
-- - Summarize full scenario/conversation based on start and endpoint for context surrounding pinpointed message(s) (requires saving specific timeframes during chat)
-- - Provide zero loss history for full message plus messages before and after respectively
+  - Summarize full scenario/conversation based on start and endpoint for context surrounding pinpointed message(s) (requires saving specific timeframes during chat)
+  - Provide zero loss history for full message plus messages before and after respectively
   
 ### Current Goals
 - After each message from the bot, parse the character's latest history JSON file and provide as context. Summarize after the message is finished (allows instant response and cooldown instead of delayed response).
