@@ -2,7 +2,7 @@
 
 *This README will be properly formatted in the future, I'm too lazy to do it now.*
 
-**As of 2023-10-16, I am having difficulty progressing due to building upon Gradio and its inability to have dynamic elements i.e. textboxes while keeping this a zero-external-library extension. Although it is possible to simply create 100 textboxes with ids 1–10 * 1–10 and hide them, I would rather not do that, though I will if I have to. JavaScript -> Python communication is simple enough thanks to button clicking events, but vice versa is not, when using Gradio.**
+For documentation purposes: **I have been postponing the development of this little project until my server parts arrive. Best case scenario, 100k context LLMs will have zero data loss and hallucination by the time I've built my server. Worst case, this would still possibly be practical...**
 
 ## Current features
 - Nothing useful 🤣
@@ -17,7 +17,14 @@ What does this project have in store for text-generation-webui?
 - Add extreme short-term information (what is CURRENTLY happening)
 - Summarize context (i.e. style of narration, 2nd person vs 3rd person) - Save summary of context in specific branch of config JSON file for future use
 - Summarize full histories (for old chats, allow summarizing certain # of messages at a time)
+- Utilize vector matrix of full chat history to search specific keywords
+- - Summarize full scenario/conversation based on start and endpoint for context surrounding pinpointed message(s) (requires saving specific timeframes during chat)
+- - Provide zero loss history for full message plus messages before and after respectively
   
+### Current Goals
+- After each message from the bot, parse the character's latest history JSON file and provide as context. Summarize after the message is finished (allows instant response and cooldown instead of delayed response).
+- Dynamically save new subjects to the character's subjects JSON file (requires more inference time).
+
 ### Master Settings
 
 - Active summarization (summarize each new line and push it to array) vs total summarization (get full story and summarize)
